@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <title>
+        Create new employee
+    </title>
+
+</head>
+<body>
+
+    <form method="post" action="/hrms/save-employee">
+        {% csrf_token %}
+        Name : <input name="name" type="text"/><br/>
+        Gender : <input name="gender" type="text"/><br/>
+        DOB : <input name="dob" type="date"/><br/>
+        Mobile Number : <input name="mobile_number" type="number"/><br/>
+        Personal Email Id : <input name="personal_email_id" type="email"/><br/>
+        Marital status : <input name="marital_status" type="text"/><br/>
+        Marriage Anniversary : <input name="marriage_anniv" type="date"/><br/>
+        Citizen : <input name="citizen" type="text"/><br/>
+        Religion : <input name="religion" type="text"/><br/>
+        Blood Group : <input name="blood_group" type="text"/><br/>
+        <input value="Create" type="submit"/>
+    </form>
+
+</body>
+</html>

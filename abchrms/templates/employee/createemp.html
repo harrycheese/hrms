@@ -1,0 +1,16 @@
+{% extends 'employee/base.html' %}
+
+{% block content %}
+  <div class="card">
+    <h5 class="card-header">Enter Employee Details</h5>
+    <div class="card-body">
+    <form method="POST" class="input-group">
+      {% csrf_token %}
+      <div class="fieldWrapper">
+      {{ employee.as_p }}
+      <button type="submit" class="save btn-danger btn-lg btn-block"> Save </button>
+      </div>
+    </form>
+  </div>
+  </div>
+{% endblock %}

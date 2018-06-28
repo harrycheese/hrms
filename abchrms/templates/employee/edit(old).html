@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <title>
+        Edit employee
+    </title>
+
+</head>
+<body>
+  {% if user.is_authenticated %}
+    <form method="post" action="/hrms/update_emp">
+        {% csrf_token %}
+          Name : <input name="name" type="text" value="{{ employee.name }}" onerror="{{ValidationError}}"/><br/>
+          Gender : <input name="gender" type="text" value="{{ employee.gender }}" onerror="{{ValidationError}}"/><br/>
+          DOB : <input name="dob" type="date" value="{{ employee.dob|date:"Y-m-d" }}"/><br/>
+          Mobile Number : <input name="mobile_number" type="number" value="{{ employee.mobile_number}}"/><br/>
+          Personal Email Id : <input name="personal_email_id" type="email" value="{{employee.personal_email_id}}"/><br/>
+          Marital status : <input name="marital_status" type="text" value="{{employee.marital_status}}"/><br/>
+          Marriage Anniversary : <input name="marriage_anniv" type="date" value="{{employee.marriage_anniv}}"/><br/>
+          Citizen : <input name="citizen" type="text" value="{{employee.citizen}}"/><br/>
+          Religion : <input name="religion" type="text" value="{{employee.religion}}"/><br/>
+          Blood Group : <input name="blood_group" type="text" value = "{{employee.blood_group}}"/><br/>
+          <input value="Update" type="submit"/>
+    </form>
+  {% endif %}
+
+</body>
+</html>
