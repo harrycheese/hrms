@@ -4,16 +4,33 @@ from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 
 #Create your models here.
 class Employee(models.Model):
+    GENDER_CHOICE = (
+        ('M','Male'),
+        ('F','Female'),
+    )
+    BLOOD_GROUP_CHOICE = (
+            ('A+','A+'),
+            ('B+','B+'),
+            ('AB+','AB+'),
+            ('A-','A-'),
+            ('B-','B-'),
+            ('AB-','AB-'),
+    )
+    MARITAL_CHOICE = (
+            ('True','Married'),
+            ('False','Unmarried'),
+    )
+
     name = models.CharField(max_length=30)
-    gender = models.CharField(max_length=1)
+    gender = models.CharField(max_length=1,choices=GENDER_CHOICE)
     dob = models.DateField()
     mobile_number = models.IntegerField()
     personal_email_id = models.EmailField()
-    marital_status = models.BooleanField()
+    marital_status = models.BooleanField(choices=MARITAL_CHOICE)
     marriage_anniv = models.DateField(null=True,blank=True)
     citizen = models.CharField(max_length=15)
     religion = models.CharField(max_length=15)
-    blood_group = models.CharField(max_length=4)
+    blood_group = models.CharField(max_length=4,choices=BLOOD_GROUP_CHOICE)
     created_by = models.ForeignKey('auth.User')
     creation_timestamp = models.DateTimeField(default=timezone.now)
 
@@ -71,6 +88,15 @@ class Employee(models.Model):
 #
 #
 class Employment(models.Model):
+    EMPLOYMENT_TYPE_CHOICE = (
+                ('Full-time','Full-time'),
+                ('Contractual','Contractual'),
+    )
+    CONFIRMATION_STATUS_CHOICE = (
+                ('Confirmed','Confirmed'),
+                ('Probation','Probation'),
+    )
+
     emp_id = models.ForeignKey('Employee',on_delete=models.CASCADE)
     official_email_id = models.EmailField()
     doj = models.DateField()
@@ -78,8 +104,8 @@ class Employment(models.Model):
     designation = models.CharField(max_length=20)
     reporting_manager_emp_id = models.ForeignKey('Employee',related_name='ReportingManager')
     hr_manager_emp_id = models.ForeignKey('Employee',related_name='HRManager')
-    emp_type = models.CharField(max_length=20)
-    confirmation_status = models.CharField(max_length=20)
+    emp_type = models.CharField(max_length=20,choices=EMPLOYMENT_TYPE_CHOICE)
+    confirmation_status = models.CharField(max_length=20,choices=CONFIRMATION_STATUS_CHOICE)
     confirmation_date = models.DateField(blank=True, null=True)
     notice_period_in_months = models.IntegerField()
     department = models.CharField(max_length=30)
@@ -94,8 +120,8 @@ class Employment(models.Model):
             non_field_errors = e.message_dict[NON_FIELD_ERRORS]
         self.save()
 
-    def __str__(self):
-        return self.emp_id.name
+    # def __str__(self):
+    #     return self.emp_id.name
 
     def clean(self):
         errordict = {}
@@ -103,13 +129,13 @@ class Employment(models.Model):
         if (self.doj > today):
             errordict['doj'] = 'Date of Joining cannot be in future'
 
-        if ((today.year - self.doj.year - ((today.month, today.day) < (self.doj.month, self.doj.day))) >= 1):
-            errordict['doj'] = 'Enter valid Joining date'
+        # if ((today.year - self.doj.year - ((today.month, today.day) < (self.doj.month, self.doj.day))) >= 1):
+        #     errordict['doj'] = 'Enter valid Joining date'
 
-        if(1 > self.job.band > 15):
+        if(1 > self.job_band > 15):
             errordict['job_band'] = 'Enter valid Job Band between 1 to 15'
 
-        if(self.emp_type not in ('Permanent','permanent','contractual','Contractual')):
+        if(self.emp_type not in ('Full-time','full-time','contractual','Contractual')):
             errordict['emp_type'] = 'Valid values are Permanent or Contractual'
 
         if(self.confirmation_status not in ('Confirmed','confirmed','Probation','probation')):
@@ -118,11 +144,11 @@ class Employment(models.Model):
         if(self.confirmation_status in ('confirmed','Confirmed') and self.confirmation_date is None):
             errordict['confirmation_date'] = 'Please enter Confirmation Date since the employee status is confirmed'
 
-        if(self.confirmation_date > today or self.confirmation_date.year < today.year):
-            errordict['confirmation_date'] = 'Please enter valid Confirmation Date'
+        # if(self.confirmation_date > today or self.confirmation_date.year < today.year):
+        #     errordict['confirmation_date'] = 'Please enter valid Confirmation Date'
 
-        if(1 < self.notice_period_in_months < 4):
-            errordict['notice_period_in_months'] = 'Please Enter Notice period in months'
+        # if(1 < self.notice_period_in_months < 4):
+        #     errordict['notice_period_in_months'] = 'Please Enter Notice period in months'
 
 
         #Pass the Dictionary to raise ValidationError

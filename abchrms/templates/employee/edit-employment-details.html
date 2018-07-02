@@ -1,0 +1,18 @@
+{% extends 'employee/base.html' %}
+<a href="{% url 'create_emp' %}">Create new employee</a> |
+<a href="{% url 'list_emp' %}"> List Employees</a>
+<hr/>
+{% block content %}
+  <div class="card">
+    <h5 class="card-header">Enter Employment Details</h5>
+    <div class="card-body">
+    <form method="POST" class="input-group">
+      {% csrf_token %}
+      <div class="fieldWrapper">
+      {{ employment.as_p }}
+      <button type="submit" class="save btn-danger btn-lg btn-block"> Save </button>
+      </div>
+    </form>
+  </div>
+  </div>
+{% endblock %}

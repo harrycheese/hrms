@@ -1,5 +1,4 @@
 {% extends 'employee/base.html' %}
-
 {% block content %}
     {% if user.is_authenticated %}
       {%  if employees and employees|length > 0  %}
@@ -35,8 +34,10 @@
                     <td>{{ employee.blood_group }}</td>
                     <td>{{ employee.created_by}}</td>
                     <td>{{employee.creation_timestamp}}</td>
-                    <td><a href="{% url 'edit_emp' pk=employee.id %}">Edit</a>
-                    <a href="{% url 'remove_emp' pk=employee.id %}">Remove</a></td>
+                    <td><a href="{% url 'edit_emp' pk=employee.id %}">Edit Details</a>
+                    <br/><a href="{% url 'remove_emp' pk=employee.id %}">Remove</a>
+                    <br/><a href="{% url 'edit_employment' emp_id=employee.id %}"> Edit Employment</a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

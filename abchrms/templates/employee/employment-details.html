@@ -1,0 +1,49 @@
+{% extends 'employee/base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+      {%  if employment and employment|length > 0  %}
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+              <tr>
+                <th>Name</th>
+                <th>Office Email</th>
+                <th>Date of Joining</th>
+                <th>Job Band</th>
+                <th>Designation</th>
+                <th>Reporting Manager</th>
+                <th>HR Manager</th>
+                <th>Employment Type<th>
+                <th>Confirmation Status</th>
+                <th>Confirmation Date</th>
+                <th>Notice Period</th>
+                <th>Department</th>
+                <th>Location</th>
+                <th> </th>
+              </tr>
+            </thread>
+            <tbody>
+              {% for employment in employment %}
+                  <tr>
+                    <td>{{ employment.emp_id.name }}</td>
+                    <td>{{ employment.official_email_id }}</td>
+                    <td>{{ employment.doj }}</td>
+                    <td>{{ employment.job_band }}</td>
+                    <td>{{ employment.designation }}</td>
+                    <td>{{ employment.reporting_manager_emp_id.name }} </td>
+                    <td>{{ employment.hr_manager_emp_id.name }}</td>
+                    <td>{{ employment.emp_type }}</td>
+                    <td>{{ employment.confirmation_status }}</td>
+                    <td>{{ employment.confirmation_date }}</td>
+                    <td>{{ employment.notice_period_in_months }}</td>
+                    <td>{{ employment.department }}</td>
+                    <td>{{ employment.location }}</td>
+                    <td><a href="{% url 'edit_employment' emp_id=employment.emp_id.id %}">Edit</a></td>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% else %}
+                No records found
+            {% endif %}
+            {% endif %}
+        {% endblock %}
