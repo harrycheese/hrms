@@ -2,7 +2,7 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-      {%  if employment and employment|length > 0  %}
+      {%  if found  %}
         <table class="table table-hover table-bordered">
             <thead class="thead-dark">
               <tr>
@@ -23,7 +23,7 @@
               </tr>
             </thread>
             <tbody>
-              {% for employment in employment %}
+              {% for employment in employments %}
                   <tr>
                     <td>{{ employment.emp_id.name }}</td>
                     <td>{{ employment.official_email_id }}</td>
@@ -39,11 +39,13 @@
                     <td>{{ employment.department }}</td>
                     <td>{{ employment.location }}</td>
                     <td><a href="{% url 'edit_employment' emp_id=employment.emp_id.id %}">Edit</a></td>
+                  </tr>
                 {% endfor %}
               </tbody>
             </table>
             {% else %}
-                No records found
+                No Employment records found.
+                <a href="{% url 'edit_employment' emp_id=employee_id %}">Click Here to create</a>
             {% endif %}
             {% endif %}
         {% endblock %}

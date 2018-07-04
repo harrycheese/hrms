@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Employee,Employment
+from .models import Employee,Employment,Leave
 from django import forms
 
 # Register your models here.
 
-admin.site.register(Employment)
+
 
 class EmployeeForm(forms.ModelForm):
     class Meta:
@@ -24,4 +24,16 @@ class EmployeeAdmin(admin.ModelAdmin):
     form = EmployeeForm
     list_display = ('name','gender','dob','mobile_number','personal_email_id','marital_status','marriage_anniv','citizen','religion','blood_group','created_by','creation_timestamp')
 
+class LeaveForm(forms.ModelForm):
+    class Meta:
+        model=Leave
+        fields=('emp_id','leave_type','leave_quota','leave_availed','created_by')
+
+class LeaveAdmin(admin.ModelAdmin):
+    form = LeaveForm
+    list_display = ('emp_id','leave_type','leave_quota','leave_balance')
+
+
 admin.site.register(Employee,EmployeeAdmin)
+admin.site.register(Leave,LeaveAdmin)
+admin.site.register(Employment)

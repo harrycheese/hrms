@@ -113,6 +113,7 @@ class Employment(models.Model):
     created_by = models.ForeignKey('auth.User')
     creation_timestamp = models.DateTimeField(default=timezone.now)
 
+
     def publish(self):
         try :
             self.full_clean()
@@ -253,14 +254,26 @@ class Education(models.Model):
 
 #
 class Leave(models.Model):
+    LEAVE_TYPE_CHOICE = (
+                    ('PL','Privelege Leave'),
+                    ('CL','Casual Leave'),
+                    ('SL','Sick Leave'),
+    )
     emp_id = models.ForeignKey('Employee',on_delete=models.CASCADE)
-    leave_type = models.CharField(max_length=10)
+    leave_type = models.CharField(max_length=2,choices=LEAVE_TYPE_CHOICE)
     leave_quota = models.IntegerField()
-    leave_availed = models.IntegerField()
+    leave_availed = models.IntegerField(default=0)
     leave_balance = models.IntegerField()
-    leave_carryforward = models.IntegerField()
+    leave_carryforward = models.IntegerField(default=0)
     created_by = models.ForeignKey('auth.User')
     creation_timestamp = models.DateTimeField(default=timezone.now)
+
+    def calculate_leave_balance(self):
+        '''Re-calculates and sets the correct values for
+            all the fields in the Leave Model
+        '''
+        self.leave_balance = self.leave_quota - self.leave_availed
+        self.save()
 
     def publish(self):
         try :
@@ -279,7 +292,54 @@ class Leave(models.Model):
         #     errordict['doj'] = 'Date of Joining cannot be in future'
 
         #Pass the Dictionary to raise ValidationError
+        self.calculate_leave_balance()
         raise ValidationError(errordict)
+
+#    def applyLeave(self):
+
+class LeaveTransaction(models.Model):
+    LEAVE_TYPE_CHOICES = (
+                    ('PL','Privelege Leave'),
+                    ('CL','Casual Leave'),
+                    ('SL','Sick Leave'),
+    )
+    LEAVE_REASON_CHOICES = (
+                    ('Personal','Personal'),
+                    ('Vacation','Vacation'),
+                    ('Marriage','Marriage'),
+                    ('Sick Leave','Sick Leave'),
+                    ('Family','Family'),
+                    ('Others','Others'),
+    )
+    emp_id = models.ForeignKey('Employee',on_delete=models.CASCADE)
+    leave_type = models.CharField(max_length=2,choices=LEAVE_TYPE_CHOICES)
+    from_date = models.DateField()
+    to_date = models.DateField()
+    no_of_days = models.IntegerField()
+    leave_reason = models.CharField(max_length=20,choices=LEAVE_REASON_CHOICES)
+    created_by = models.ForeignKey('auth.User')
+    creation_timestamp = models.DateTimeField(default=timezone.now)
+
+    def publish(self):
+        try :
+            self.full_clean()
+        except ValidationError as e:
+            non_field_errors = e.message_dict[NON_FIELD_ERRORS]
+        self.save()
+
+    def __str__(self):
+        return self.emp_id.name
+
+    def clean(self):
+        errordict = {}
+        today = timezone.localdate()
+        if (self.from_date > self.to_date):
+             errordict['from_date'] = 'From Date cannot be greater than To date'
+        if (self.leave_reason == 'Marriage' and self.emp_id.marital_status == True):
+            errordict['leave_reason'] = 'You are already married'
+        #Pass the Dictionary to raise ValidationError
+        raise ValidationError(errordict)
+
 
 #
 class Dependents(models.Model):
@@ -373,10 +433,12 @@ class Attendance(models.Model):
         raise ValidationError(errordict)
 
 #
-class Transactons(models.Model):
+class Transactions(models.Model):
     emp_id = models.ForeignKey('Employee',on_delete=models.CASCADE)
     model_foreign_key = models.IntegerField()
     tran_date = models.DateField()
+    tran_type = models.CharField(max_length=20,default='undefined')
+
     def publish(self):
         try :
             self.full_clean()
@@ -395,3 +457,8 @@ class Transactons(models.Model):
 
         #Pass the Dictionary to raise ValidationError
         raise ValidationError(errordict)
+
+    def addTransaction(self,model_foreign_key,tran_type):
+        self.model_foreign_key = model_foreign_key
+        self.tran_type = tran_type
+        self.tran_date = timezone.now()

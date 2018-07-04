@@ -22,6 +22,10 @@
             <tbody>
             {% for employee in employees  %}
                 <tr>
+                    <td><a href="{% url 'edit_emp' pk=employee.id %}">Edit Employee Details</a></td>
+                    <td><a href="{% url 'remove_emp' pk=employee.id %}">Remove Employee</a></td>
+                    <td><a href="{% url 'list_employment' emp_id=employee.id %}"> List Employment Details</a></td>
+                    <td><a href="{% url 'display_leave' emp_id=employee.id %}"> Display Leaves</a></td>
                     <td>{{ employee.name }}</td>
                     <td>{{ employee.gender }}</td>
                     <td>{{ employee.dob }}</td>
@@ -34,10 +38,6 @@
                     <td>{{ employee.blood_group }}</td>
                     <td>{{ employee.created_by}}</td>
                     <td>{{employee.creation_timestamp}}</td>
-                    <td><a href="{% url 'edit_emp' pk=employee.id %}">Edit Details</a>
-                    <br/><a href="{% url 'remove_emp' pk=employee.id %}">Remove</a>
-                    <br/><a href="{% url 'edit_employment' emp_id=employee.id %}"> Edit Employment</a>
-                    </td>
                 </tr>
             {% endfor %}
             </tbody>

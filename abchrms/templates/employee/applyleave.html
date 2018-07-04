@@ -1,0 +1,13 @@
+
+{% extends 'employee/base.html' %}
+{% block content %}
+<div>
+  <form method="POST" class="input-group">
+  {% csrf_token %}
+    <div>
+      {{ leavetransaction.as_p }}
+      <button type = "submit" class = "save btn-danger btn-lg btn-block"> Save </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

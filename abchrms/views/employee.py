@@ -1,32 +1,39 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.utils import timezone
 import logging
 from abchrms.forms import EmployeeForm
 from abchrms.models import Employee
+"""
+The following views allow a user to Create, Update and Remove
+Employee basis the Employee.id Primary Key defined in the
+Employee Model
+"""
 
-
+#Using the Logger to display messages in Server Console
+#for debugging loops
 logger = logging.getLogger(__name__)
 
 def create_emp(request):
 
-    if request.method == "POST":
+    if request.method == "POST":#This if block is where the actual employee is created
         employee = EmployeeForm(request.POST)
         logger.error('firstif in create_emp')
-        if employee.is_valid():
+        if employee.is_valid():#This if block validates if there are no validation errors
             logger.error('secondif in create_emp')
-            saved_emp = employee.save(commit=False)
+            saved_emp = employee.save(commit=False)#commit is set to false so that we can update createdby and created timestamp fields
             saved_emp.created_by = request.user
             saved_emp.creation_timestamp = timezone.now()
             saved_emp.save()
             return redirect('list_emp')
-    else:
+    else: #this else block is where screen is blank form is displayed
         logger.error('else in create_emp')
         employee = EmployeeForm()
     return render(request,'employee/createemp.html',{'employee':employee})
 
 
 def update_emp(request,pk):
-    emp = Employee.objects.get(id=pk)
+    #gets object basis id field of Employee else if not found returns HTTP404
+    emp = get_object_or_404(Employee,id=pk)
     if request.method == "POST":
         logger.error('firstif')
         employee = EmployeeForm(request.POST, instance=emp)

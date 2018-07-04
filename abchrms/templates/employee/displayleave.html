@@ -1,0 +1,60 @@
+{% extends 'employee/base.html' %}
+{% block content %}
+{% if found %}
+<div>
+<table class="table table-hover table-bordered">
+    <thead class="thead-dark">
+        <tr>
+          <th>Name</th>
+          <th>Leave Type</th>
+          <th>Leave Quota</th>
+          <th>Leaves Availed</th>
+          <th>Leave Balance</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for leave in leaves %}
+          <tr>
+            <td>{{ leave.emp_id.name }}</td>
+            <td>{{ leave.leave_type }}</td>
+            <td>{{ leave.leave_quota }}</td>
+            <td>{{ leave.leave_availed }}</td>
+            <td>{{ leave.leave_balance }}</td>
+            <td><a href="{% url 'apply_leave' emp_id=leave.emp_id.id %}"> Apply Leave </a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <table class="table table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr>
+              <th>Name</th>
+              <th>Leave Type</th>
+              <th>From Date</th>
+              <th>To Date</th>
+              <th>No of Days</th>
+              <th>Leave Reason</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for leavedetail in leavedetails %}
+              <tr>
+                <td>{{ leavedetail.emp_id.name }}</td>
+                <td>{{ leavedetail.leave_type }}</td>
+                <td>{{ leavedetail.from_date }}</td>
+                <td>{{ leavedetail.to_date }}</td>
+                <td>{{ leavedetail.no_of_days }}</td>
+                <td>{{ leavedetail.leave_reason }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+      </table>
+      {% else %}
+          No Leave records found. 
+
+    </div>
+
+  {% endif %}
+{% endblock %}
