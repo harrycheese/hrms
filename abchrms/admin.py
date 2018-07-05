@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Employee,Employment,Leave
+from .models import Employee,Employment,Leave,Product,RuleEngine
 from django import forms
 
 # Register your models here.
@@ -37,3 +37,5 @@ class LeaveAdmin(admin.ModelAdmin):
 admin.site.register(Employee,EmployeeAdmin)
 admin.site.register(Leave,LeaveAdmin)
 admin.site.register(Employment)
+admin.site.register(Product)
+admin.site.register(RuleEngine)

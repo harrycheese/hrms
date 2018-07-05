@@ -1,0 +1,30 @@
+{% extends 'employee/baselogin.html' %}
+{% block content %}
+<div>
+  <table class="table table-hover table-bordered">
+      <thead class="thead-dark">
+          <tr>
+            <th>Name</th>
+            <th>Leave Type</th>
+            <th>Leave Duration</th>
+            <th>From Date</th>
+            <th>To Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{leavetxn.emp_id.name}}</td>
+            <td>{{leavetxn.leave_type}}</td>
+            <td>{{leavetxn.no_of_days}}</td>
+            <td>{{leavetxn.from_date}}</td>
+            <td>{{leavetxn.to_date}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+<div>
+  <p>Applicable Product Details to be Shown here</p>
+</div>
+
+{% endblock %}

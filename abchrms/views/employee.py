@@ -61,3 +61,8 @@ def remove_emp(request, employee_id):
    employee = Employee.objects.get(id=employee_id)
    employee.delete()
    return redirect('list_emp')
+
+
+def welcome(request,emp_id):
+    employee=get_object_or_404(Employee,id=emp_id)
+    return render(request,'employee/welcome.html',{'employee':employee})

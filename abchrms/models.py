@@ -343,9 +343,16 @@ class LeaveTransaction(models.Model):
 
 #
 class Dependents(models.Model):
+    RELATION_CHOICES=(
+                ('spouse','Spouse'),
+                ('son','Son'),
+                ('daughter','Daughter'),
+                ('father','Father'),
+                ('mother','Mother'),
+    )
     emp_id = models.ForeignKey('Employee',on_delete=models.CASCADE)
     dep_name = models.CharField(max_length=30)
-    dep_rel = models.CharField(max_length=20)
+    dep_rel = models.CharField(max_length=20,choices=RELATION_CHOICES)
     dep_dob = models.DateField()
     effective_from = models.DateField(default=timezone.now)
     active_flag = models.BooleanField()
@@ -371,6 +378,15 @@ class Dependents(models.Model):
         #Pass the Dictionary to raise ValidationError
         raise ValidationError(errordict)
 
+class DependentTransaction(models.Model):
+    DEPENDENT_TRANSACTION_TYPE = (
+                            ('add','add'),
+                            ('remove','remove'),
+                            ('edit','edit'),
+    )
+    emp_id = models.ForeignKey('Employee',on_delete=models.CASCADE)
+    dep_id = models.ForeignKey('Dependents',on_delete=models.CASCADE)
+    dep_txn_type = models.CharField(max_length=10,choices=DEPENDENT_TRANSACTION_TYPE)
 #
 class Address(models.Model):
     emp_id = models.ForeignKey('Employee',on_delete=models.CASCADE)
@@ -434,10 +450,23 @@ class Attendance(models.Model):
 
 #
 class Transactions(models.Model):
+    TRANSACTION_TYPE_CHOICE=(
+                    ('leave','leave'),
+                    ('dependent','dependent'),
+    )
     emp_id = models.ForeignKey('Employee',on_delete=models.CASCADE)
     model_foreign_key = models.IntegerField()
     tran_date = models.DateField()
-    tran_type = models.CharField(max_length=20,default='undefined')
+    tran_type = models.CharField(max_length=20,
+                        choices=TRANSACTION_TYPE_CHOICE
+    )
+
+    def add_ledger(self,emp_id,tran_type,model_foreign_key):
+        self.emp_id = emp_id
+        self.tran_type = tran_type
+        self.model_foreign_key = model_foreign_key
+        self.tran_date = timezone.now()
+        self.save()
 
     def publish(self):
         try :
@@ -458,7 +487,31 @@ class Transactions(models.Model):
         #Pass the Dictionary to raise ValidationError
         raise ValidationError(errordict)
 
-    def addTransaction(self,model_foreign_key,tran_type):
-        self.model_foreign_key = model_foreign_key
-        self.tran_type = tran_type
-        self.tran_date = timezone.now()
+class Product(models.Model):
+    PRODUCT_VALUES=(
+                ('TI','Travel Insurance'),
+                ('ULIP','Child Plan'),
+                ('EQMF','Equity MF SIP'),
+                ('LI','Term Life Insurance'),
+    )
+    PIFA_CHOICES=(
+                ('P','Protecting'),
+                ('I','Investing'),
+                ('F','Financing'),
+                ('A','Advising'),
+    )
+
+    product_type = models.CharField(max_length=10,choices=PRODUCT_VALUES)
+    product_name = models.CharField(max_length=50)
+    product_disp_text = models.TextField()
+    product_cat = models.CharField(max_length=1,choices=PIFA_CHOICES)
+
+
+class RuleEngine(models.Model):
+    TRANSACTION_TYPE_CHOICE=(
+                    ('leave','leave'),
+                    ('dependent','dependent'),
+    )
+    product=models.CharField(max_length=50)
+    txn_type = models.CharField(max_length=20,choices=TRANSACTION_TYPE_CHOICE)
+    rules = models.CharField(max_length=500)

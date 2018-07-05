@@ -1,5 +1,5 @@
 from django import forms
-from abchrms.models import Employee,Employment,LeaveTransaction
+from abchrms.models import Employee,Employment,LeaveTransaction,Dependents
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -79,3 +79,19 @@ class LeaveTransactionForm(forms.ModelForm):
                 'leave_reason' : forms.Select(choices=LEAVE_REASON_CHOICES),
                 'leave_type' : forms.Select(choices = LEAVE_TYPE_CHOICES)
          }
+
+class DependentsForm(forms.ModelForm):
+    class Meta:
+        RELATION_CHOICES=(
+                    ('spouse','Spouse'),
+                    ('son','Son'),
+                    ('daughter','Daughter'),
+                    ('father','Father'),
+                    ('mother','Mother'),
+        )
+        model = Dependents
+        fields = ('dep_name','dep_rel','dep_dob')
+        widgets = {
+                'dep_rel' : forms.Select(choices=RELATION_CHOICES),
+                'dep_dob' : DateInput()
+        }

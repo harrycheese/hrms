@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect,get_object_or_404
 from django.utils import timezone
 import logging
 from abchrms.forms import LeaveTransactionForm
-from abchrms.models import LeaveTransaction,Leave,Employee
+from abchrms.models import LeaveTransaction,Leave,Employee,Transactions
 
 """
 The following view allows a user to mark leave
@@ -33,11 +33,16 @@ def apply_leave(request,emp_id):
                 saved_leavetransaction.creation_timestamp = timezone.now()
                 saved_leavetransaction.save()
                 leave.save()
+                transaction = Transactions()
+                transaction.add_ledger(emp_id=Employee.objects.get(id=emp_id),
+                                    tran_type = 'leave',
+                                    model_foreign_key = saved_leavetransaction.id
+                )
                 return redirect('display_leave',emp_id=emp_id)
     else:
         leavetransaction = LeaveTransactionForm()
-        return render(request,'employee/applyleave.html'
-                    ,{'leavetransaction':leavetransaction}
+        return render(request,'employee/applyleave.html',
+                        {'leavetransaction':leavetransaction,'employee':Employee.objects.get(id=emp_id)}
                 )
 
 def display_leave(request,emp_id):
@@ -48,4 +53,9 @@ def display_leave(request,emp_id):
     else:
         found = False
         leavedetails = False
-    return render(request,'employee/displayleave.html',{'found':found,'leaves':leaves,'leavedetails':leavedetails})
+    return render(request,'employee/displayleave.html',{'found':found,'leaves':leaves,'leavedetails':leavedetails,'employee':Employee.objects.get(id=emp_id)})
+
+def display_leavetxn(request,pk):
+    leavetxn = get_object_or_404(LeaveTransaction,id=pk)
+    employee = leavetxn.emp_id
+    return render(request,'employee/displayleavetxn.html',{'leavetxn':leavetxn,'employee':employee})

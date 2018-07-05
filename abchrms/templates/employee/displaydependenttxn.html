@@ -1,0 +1,34 @@
+{% extends 'employee/baselogin.html' %}
+{% block content %}
+<div>
+  <table class="table table-hover table-bordered">
+      <thead class="thead-dark">
+          <tr>
+            <th>Name</th>
+            <th>Dependent Name</th>
+            <th>Dependent Relation</th>
+            <th>Dependent DOB</th>
+            <th>Effective Date</th>
+            <th>Is Active</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ employee.name }}</td>
+            <td>{{ dependenttxn.dep_id.dep_name }}</td>
+            <td>{{ dependenttxn.dep_id.dep_rel }}</td>
+            <td>{{ dependenttxn.dep_id.dep_dob }}</td>
+            <td>{{ dependenttxn.dep_id.effective_from }}</td>
+            <td>{{ dependenttxn.dep_id.active_flag }}</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+<div>
+  <p>Applicable Product Details to be Shown here</p>
+</div>
+
+
+{% endblock %}

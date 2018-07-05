@@ -1,0 +1,17 @@
+{% extends 'employee/baselogin.html' %}
+
+{% block content %}
+  <div class="card">
+    <h5 class="card-header">Enter Dependent Details for {{employee.name}}</h5>
+    <div class="card-body">
+    <form method="POST" class="input-group">
+      {% csrf_token %}
+      <div class="fieldWrapper">
+      {{ dependent.as_p }}
+      <button type="submit" class="save btn-danger btn-lg btn-block"> Save </button>
+      </div>
+    </form>
+  </div>
+
+  </div>
+{% endblock %}

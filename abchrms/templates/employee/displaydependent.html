@@ -1,0 +1,37 @@
+{% extends 'employee/baselogin.html' %}
+{% block content %}
+{% if found %}
+<div>
+<table class="table table-hover table-bordered">
+    <thead class="thead-dark">
+        <tr>
+          <th>Name</th>
+          <th>Dependent Name</th>
+<!--          <th>Dependent Relation</th>
+          <th>Dependent DOB</th>
+          <th>Effective Date</th>
+          <th>Is Active</th>-->
+        </tr>
+      </thead>
+      <tbody>
+        {% for dependent in dependents %}
+          <tr>
+            <td>{{ dependent.emp_id.name }}</td>
+            <td>{{ dependent.dep_name }}</td>
+<!--            <td>{{ dependent.dep_rel }}</td>
+            <td>{{ dependent.dep_dob }}</td>
+            <td>{{ dependent.effective_from }}</td>
+              <td>{{ dependent.active_flag }}</td>-->
+            <td><a href="{% url 'edit_dependent' emp_id=emp_id pk=dependent.id %}"> Edit Dependent </a></td>
+            <td><a href="{% url 'display_dependent_detail' pk=dependent.id %}"> Show Details </a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+      <p>No Dependents records found.
+        <a href="{% url 'add_dependent' emp_id=emp_id %}"> Add Dependents </a>
+      </p>
+  </div>
+{% endif %}
+{% endblock %}

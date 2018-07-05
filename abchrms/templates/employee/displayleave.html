@@ -1,4 +1,4 @@
-{% extends 'employee/base.html' %}
+{% extends 'employee/baselogin.html' %}
 {% block content %}
 {% if found %}
 <div>
@@ -32,10 +32,7 @@
             <tr>
               <th>Name</th>
               <th>Leave Type</th>
-              <th>From Date</th>
-              <th>To Date</th>
               <th>No of Days</th>
-              <th>Leave Reason</th>
             </tr>
           </thead>
           <tbody>
@@ -43,16 +40,14 @@
               <tr>
                 <td>{{ leavedetail.emp_id.name }}</td>
                 <td>{{ leavedetail.leave_type }}</td>
-                <td>{{ leavedetail.from_date }}</td>
-                <td>{{ leavedetail.to_date }}</td>
                 <td>{{ leavedetail.no_of_days }}</td>
-                <td>{{ leavedetail.leave_reason }}</td>
+                <td><a href="{% url 'leave_details' pk=leavedetail.id %}"> View details </td>
               </tr>
             {% endfor %}
             </tbody>
       </table>
       {% else %}
-          No Leave records found. 
+          <p>Sorry!! You have not been assigned any leaves yet by the administrator</p>
 
     </div>
 
