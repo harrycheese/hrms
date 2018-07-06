@@ -59,7 +59,7 @@ class EmploymentForm(forms.ModelForm):
 class LeaveTransactionForm(forms.ModelForm):
      class Meta:
          LEAVE_TYPE_CHOICES = (
-                         ('PL','Privelege Leave'),
+                         ('PL','Privilege Leave'),
                          ('CL','Casual Leave'),
                          ('SL','Sick Leave'),
          )

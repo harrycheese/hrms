@@ -299,7 +299,7 @@ class Leave(models.Model):
 
 class LeaveTransaction(models.Model):
     LEAVE_TYPE_CHOICES = (
-                    ('PL','Privelege Leave'),
+                    ('PL','Privilege Leave'),
                     ('CL','Casual Leave'),
                     ('SL','Sick Leave'),
     )
