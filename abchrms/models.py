@@ -16,17 +16,17 @@ class Employee(models.Model):
             ('B-','B-'),
             ('AB-','AB-'),
     )
-    MARITAL_CHOICE = (
-            ('True','Married'),
-            ('False','Unmarried'),
-    )
+    # MARITAL_CHOICE = (
+    #         ('True','Married'),
+    #         ('False','Unmarried'),
+    # )
 
     name = models.CharField(max_length=30)
     gender = models.CharField(max_length=1,choices=GENDER_CHOICE)
     dob = models.DateField()
     mobile_number = models.IntegerField()
     personal_email_id = models.EmailField()
-    marital_status = models.BooleanField(choices=MARITAL_CHOICE)
+    marital_status = models.BooleanField()
     marriage_anniv = models.DateField(null=True,blank=True)
     citizen = models.CharField(max_length=15)
     religion = models.CharField(max_length=15)

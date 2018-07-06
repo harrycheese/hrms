@@ -1,5 +1,9 @@
 {% extends 'employee/base.html' %}
 
+{% block title %}
+  <title>ABC HRMS Admin Panel - Employee Details</title>
+{% endblock %}
+
 {% block content %}
     {% if user.is_authenticated %}
       {%  if found  %}
