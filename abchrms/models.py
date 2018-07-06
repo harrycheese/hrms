@@ -121,8 +121,8 @@ class Employment(models.Model):
             non_field_errors = e.message_dict[NON_FIELD_ERRORS]
         self.save()
 
-    # def __str__(self):
-    #     return self.emp_id.name
+    def __str__(self):
+        return self.emp_id.name
 
     def clean(self):
         errordict = {}
@@ -327,8 +327,8 @@ class LeaveTransaction(models.Model):
             non_field_errors = e.message_dict[NON_FIELD_ERRORS]
         self.save()
 
-    def __str__(self):
-        return self.emp_id.name
+    # def __str__(self):
+    #     return str(self.emp_id.name)+'_'+str(self.leave_type)
 
     def clean(self):
         errordict = {}
@@ -506,6 +506,9 @@ class Product(models.Model):
     product_disp_text = models.TextField()
     product_cat = models.CharField(max_length=1,choices=PIFA_CHOICES)
 
+    def __str__(self):
+        return self.product_name
+
 
 class RuleEngine(models.Model):
     TRANSACTION_TYPE_CHOICE=(
@@ -515,3 +518,6 @@ class RuleEngine(models.Model):
     product=models.CharField(max_length=50)
     txn_type = models.CharField(max_length=20,choices=TRANSACTION_TYPE_CHOICE)
     rules = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.product

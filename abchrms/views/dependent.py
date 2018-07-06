@@ -31,7 +31,7 @@ def add_dependent(request,emp_id):
                                 tran_type = 'dependent',
                                 model_foreign_key = deptran.id
             )
-            return redirect('list_dependent',emp_id=emp_id)
+            return redirect('display_dependent_detail',pk=deptran.id)
     else:
         dependent = DependentsForm()
     return render(request,'employee/editdependent.html',{'dependent':dependent,'employee':Employee.objects.get(id=emp_id)})
@@ -58,7 +58,7 @@ def edit_dependent(request,emp_id,pk):
                                 tran_type = 'dependent',
                                 model_foreign_key = deptran.id
             )
-            return redirect('list_dependent',emp_id=emp_id)
+            return redirect('display_dependent_detail',pk=pk)
     else:
         dependent = DependentsForm(instance=dep)
     return render(request,'employee/editdependent.html',{'dependent':dependent,'employee':Employee.objects.get(id=emp_id)})

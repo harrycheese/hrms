@@ -1,6 +1,9 @@
 {% extends 'employee/baselogin.html' %}
 {% block content %}
 <div>
+  <h3> Dependent Detail Added Successfully !</h3>
+</div>
+<div>
   <table class="table table-hover table-bordered">
       <thead class="thead-dark">
           <tr>
@@ -20,14 +23,20 @@
             <td>{{ dependenttxn.dep_id.dep_dob }}</td>
             <td>{{ dependenttxn.dep_id.effective_from }}</td>
             <td>{{ dependenttxn.dep_id.active_flag }}</td>
+            <td>
+                <a href="{% url 'list_dependent' emp_id=employee.id %}">View Dependents</a>
+            </td>
           </tr>
 
         </tbody>
       </table>
     </div>
 
-<div>
-  <p>Applicable Product Details to be Shown here</p>
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">Here are some products that are tailored for you</h4>
+    <p class="card-text">Applicable Product Details to be Shown here</p>
+</div>
 </div>
 
 

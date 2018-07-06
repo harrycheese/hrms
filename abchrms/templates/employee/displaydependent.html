@@ -26,6 +26,10 @@
             <td><a href="{% url 'display_dependent_detail' pk=dependent.id %}"> Show Details </a></td>
           </tr>
         {% endfor %}
+        <div>
+          <p><a href="{% url 'add_dependent' emp_id=emp_id %}">
+            Add more Dependents </a>
+         </p>
       </tbody>
     </table>
     {% else %}

@@ -38,7 +38,7 @@ def apply_leave(request,emp_id):
                                     tran_type = 'leave',
                                     model_foreign_key = saved_leavetransaction.id
                 )
-                return redirect('display_leave',emp_id=emp_id)
+                return redirect('leave_details',pk=saved_leavetransaction.id)
     else:
         leavetransaction = LeaveTransactionForm()
         return render(request,'employee/applyleave.html',
