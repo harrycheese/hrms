@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.utils import timezone
 import logging
+from itertools import chain
 from abchrms.forms import LeaveTransactionForm
-from abchrms.models import LeaveTransaction,Leave,Employee,Transactions
+from abchrms.models import LeaveTransaction,Leave,Employee,Transactions,Product,RuleEngine,Employment
 
 """
 The following view allows a user to mark leave
@@ -58,4 +59,16 @@ def display_leave(request,emp_id):
 def display_leavetxn(request,pk):
     leavetxn = get_object_or_404(LeaveTransaction,id=pk)
     employee = leavetxn.emp_id
-    return render(request,'employee/displayleavetxn.html',{'leavetxn':leavetxn,'employee':employee})
+    employment = get_object_or_404(Employment,emp_id = leavetxn.emp_id)
+    rules = RuleEngine.objects.filter(txn_type='leave')
+    ti_products = Product.objects.filter(product_type = 'TI')
+    li_products = Product.objects.filter(product_type = 'LI')
+    pl_products = Product.objects.filter(product_type = 'PL')
+    empty_prod = {}
+    if ti_products.exists() and leavetxn.leave_type == "PL" and leavetxn.leave_reason == "Vacation":
+        return render(request,'employee/displayleavetxn.html',{'leavetxn':leavetxn,'employee':employee,'rules':rules,'products':ti_products})
+    elif li_products.exists() and leavetxn.leave_type == 'SL' and leavetxn.leave_reason == 'Sick Leave':
+        return render(request,'employee/displayleavetxn.html',{'leavetxn':leavetxn,'employee':employee,'rules':rules,'products':li_products})
+    elif pl_products.exists() and leavetxn.leave_type in ('PL','CL') and employment.job_band > 9:
+        return render(request,'employee/displayleavetxn.html',{'leavetxn':leavetxn,'employee':employee,'rules':rules,'products':list(chain(pl_products,ti_products))})
+    return render(request,'employee/displayleavetxn.html',{'leavetxn':leavetxn,'employee':employee,'rules':rules,'products':empty_prod})

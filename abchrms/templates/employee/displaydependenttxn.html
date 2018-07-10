@@ -32,12 +32,23 @@
       </table>
     </div>
 
-<div class="card">
-  <div class="card-body">
-    <h4 class="card-title">Here are some products that are tailored for you</h4>
-    <p class="card-text">Applicable Product Details to be Shown here</p>
-</div>
-</div>
-
+    {% if products|length > 1 %}
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Here are some products that are tailored for you</h4>
+        <p class="card-text">
+          <table class="table">
+              {% for product in products %}
+              <tr>
+              <td> {{product.product_name}}</td>
+              <td> {{product.product_disp_text}}</td>
+              <td>  <button class="save btn-danger btn-lg btn-block">Buy Online! </button></td>
+              </tr>
+              {% endfor %}
+          </table>
+        </p>
+      </div>
+    </div>
+    {% endif %}
 
 {% endblock %}

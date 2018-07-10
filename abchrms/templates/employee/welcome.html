@@ -1,14 +1,24 @@
 {% extends 'employee/baselogin.html' %}
+{% load staticfiles %}
+
 {% block content %}
 
 <div>
 <p>Welcome {{employee.name}}</p>
 </div>
-<table class="table table-hover table-bordered">
+<table class="table table-bordered table-condensed .table-responsive">
   <tbody>
     <tr>
-      <td><a href="{% url 'display_leave' emp_id=employee.id %}">Apply Leaves</a></td>
-      <td><a href="{% url 'list_dependent' emp_id=employee.id %}">View Dependents</a></td>
+      <td style="width:175px;height:130px;"><a href="{% url 'display_leave' emp_id=employee.id %}">
+          <img src="{% static 'images/leave.jpg' %}" style="width:170px;height:128px;">
+          <br/>Apply Leaves
+          </img>
+      </a></td>
+      <td><a href="{% url 'list_dependent' emp_id=employee.id %}">
+          <img src="{% static 'images/dependent.jpg' %}" style="width:170px;height:128px;">
+            <br/>Add dependents
+          </img>
+      </a></td>
     </tr>
   </tbody>
 </table>

@@ -493,6 +493,7 @@ class Product(models.Model):
                 ('ULIP','Child Plan'),
                 ('EQMF','Equity MF SIP'),
                 ('LI','Term Life Insurance'),
+                ('PL','Personal Loan'),
     )
     PIFA_CHOICES=(
                 ('P','Protecting'),

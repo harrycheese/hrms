@@ -9,6 +9,7 @@
             <th>Leave Duration</th>
             <th>From Date</th>
             <th>To Date</th>
+            <th>Leave Reason</th>
           </tr>
         </thead>
         <tbody>
@@ -18,15 +19,27 @@
             <td>{{leavetxn.no_of_days}}</td>
             <td>{{leavetxn.from_date}}</td>
             <td>{{leavetxn.to_date}}</td>
+            <td>{{leavetxn.leave_reason}}</td>
           </tr>
         </tbody>
       </table>
     </div>
-
+  {% if products|length > 1 %}
   <div class="card">
       <div class="card-body">
         <h4 class="card-title">Here are some products that are tailored for you</h4>
-        <p class="card-text">Applicable Product Details to be Shown here</p>
+        <p class="card-text">
+          <table class="table">
+              {% for product in products %}
+              <tr>
+              <td> {{product.product_name}}</td>
+              <td> {{product.product_disp_text}}</td>
+              <td>  <button class="save btn-danger btn-lg btn-block">Buy Online! </button></td>
+              </tr>
+              {% endfor %}
+          </table>
+        </p>
     </div>
+    {% endif %}
 
 {% endblock %}

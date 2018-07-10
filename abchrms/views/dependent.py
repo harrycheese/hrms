@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect,get_object_or_404
 from django.utils import timezone
 import logging
 from abchrms.forms import DependentsForm
-from abchrms.models import Dependents,Employee,Transactions,DependentTransaction
+from abchrms.models import Dependents,Employee,Transactions,DependentTransaction,Product
 
 """
 The following view allows a user to add dependents
@@ -79,4 +79,11 @@ def display_dependent(request,emp_id):
 def display_dependenttxn(request,pk):
     dependenttxn = get_object_or_404(DependentTransaction,id=pk)
     employee = get_object_or_404(Employee,id=dependenttxn.emp_id.id)
-    return render(request,'employee/displaydependenttxn.html',{'dependenttxn':dependenttxn,'employee':employee})
+    ulip_products = Product.objects.filter(product_type='ULIP')
+    li_products = Product.objects.filter(product_type = 'LI')
+    empty_prod = {}
+    if ulip_products.exists() and dependenttxn.dep_id.dep_rel in ('son','daughter') and dependenttxn.dep_txn_type in ('add','edit'):
+        return render(request,'employee/displaydependenttxn.html',{'dependenttxn':dependenttxn,'employee':employee,'products':ulip_products})
+    elif li_products.exists() and dependenttxn.dep_id.dep_rel not in ('son','daughter') and dependenttxn.dep_txn_type in ('add','edit'):
+        return render(request,'employee/displaydependenttxn.html',{'dependenttxn':dependenttxn,'employee':employee,'products':li_products})
+    return render(request,'employee/displaydependenttxn.html',{'dependenttxn':dependenttxn,'employee':employee,'products':empty_prod})
