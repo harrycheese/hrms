@@ -18,13 +18,13 @@
         <tbody>
           <tr>
             <td>{{ employee.name }}</td>
-            <td>{{ dependenttxn.dep_id.dep_name }}</td>
-            <td>{{ dependenttxn.dep_id.dep_rel }}</td>
-            <td>{{ dependenttxn.dep_id.dep_dob }}</td>
-            <td>{{ dependenttxn.dep_id.effective_from }}</td>
-            <td>{{ dependenttxn.dep_id.active_flag }}</td>
+            <td>{{ dependent.dep_name }}</td>
+            <td>{{ dependent.dep_rel }}</td>
+            <td>{{ dependent.dep_dob }}</td>
+            <td>{{ dependent.effective_from }}</td>
+            <td>{{ dependent.active_flag }}</td>
             <td>
-                <a href="{% url 'list_dependent' emp_id=employee.id %}">View Dependents</a>
+                <a href="{% url 'edit_dependent' emp_id=employee.id pk=dependent.id %}">Edit Dependents</a>
             </td>
           </tr>
 

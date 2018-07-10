@@ -77,13 +77,13 @@ def display_dependent(request,emp_id):
 #         dependents.
 
 def display_dependenttxn(request,pk):
-    dependenttxn = get_object_or_404(DependentTransaction,id=pk)
-    employee = get_object_or_404(Employee,id=dependenttxn.emp_id.id)
+    dependent = get_object_or_404(Dependents,id=pk)
+    employee = get_object_or_404(Employee,id=dependent.emp_id.id)
     ulip_products = Product.objects.filter(product_type='ULIP')
     li_products = Product.objects.filter(product_type = 'LI')
     empty_prod = {}
-    if ulip_products.exists() and dependenttxn.dep_id.dep_rel in ('son','daughter') and dependenttxn.dep_txn_type in ('add','edit'):
-        return render(request,'employee/displaydependenttxn.html',{'dependenttxn':dependenttxn,'employee':employee,'products':ulip_products})
-    elif li_products.exists() and dependenttxn.dep_id.dep_rel not in ('son','daughter') and dependenttxn.dep_txn_type in ('add','edit'):
-        return render(request,'employee/displaydependenttxn.html',{'dependenttxn':dependenttxn,'employee':employee,'products':li_products})
-    return render(request,'employee/displaydependenttxn.html',{'dependenttxn':dependenttxn,'employee':employee,'products':empty_prod})
+    if ulip_products.exists() and dependent.dep_rel in ('son','daughter'):
+        return render(request,'employee/displaydependenttxn.html',{'dependent':dependent,'employee':employee,'products':ulip_products})
+    elif li_products.exists() and dependent.dep_rel not in ('son','daughter'):
+        return render(request,'employee/displaydependenttxn.html',{'dependent':dependent,'employee':employee,'products':li_products})
+    return render(request,'employee/displaydependenttxn.html',{'dependent':dependent,'employee':employee,'products':empty_prod})
